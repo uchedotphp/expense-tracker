@@ -2,23 +2,11 @@ import { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Result from "./components/Result";
-import { ResultData } from "./components/dataType";
+import { ResultData, categoryOptions } from "./components/dataType";
 
 function App() {
   const [results, setResult] = useState<ResultData[]>([]);
-  const categoryOptions = [
-    "all categories",
-    "groceries",
-    "utitlities",
-    "rent",
-    "mortgage",
-    "insurance",
-    "transportation",
-    "health",
-    "entertainment",
-    "clothing",
-    "other",
-  ];
+  
   return (
     <div className="app-box">
       <Form
