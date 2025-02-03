@@ -1,48 +1,51 @@
-import { FormEvent, useRef } from "react";
 import { ResultData } from "./dataType";
+import { useForm } from "react-hook-form";
 interface FormProps {
   categoryOptions: string[];
   onClickSubmit: (result: ResultData) => void;
 }
 
 export const Form = ({ categoryOptions, onClickSubmit }: FormProps) => {
-  const description = useRef<HTMLInputElement>(null);
-  const amount = useRef<HTMLInputElement>(null);
-  const category = useRef<HTMLSelectElement>(null);
-  const result: ResultData = { description: "", amount: 0, category: "" };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<ResultData>();
+  console.log(errors);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    result["description"] = description.current?.value || "";
-    result["amount"] = amount.current?.value
-      ? parseFloat(amount.current.value)
-      : 0;
-    result["category"] = category.current?.value || "";
-    onClickSubmit(result);
+  const submitForm = (e: ResultData) => {
+    console.log("the form data", e);
+    onClickSubmit(e);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(data => {
+      submitForm(data);
+      reset();
+    })}>
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
         </label>
         <input
-          ref={description}
+          {...register("description", { required: true, minLength: 5 })}
           className="form-control"
           id="description"
           aria-describedby="emailHelp"
         />
-        <div id="emailHelp" className="form-text">
-          We'll never share your email with anyone else.
-        </div>
+        {errors.description?.type === "required" && (
+          <div id="emailHelp" className="form-text">
+            We'll never share your email with anyone else.
+          </div>
+        )}
       </div>
       <div className="mb-3">
         <label htmlFor="amount" className="form-label">
           Amount
         </label>
         <input
-          ref={amount}
+          {...register("amount", { required: true, valueAsNumber: true })}
           className="form-control"
           id="amount"
           aria-describedby="emailHelp"
@@ -56,7 +59,7 @@ export const Form = ({ categoryOptions, onClickSubmit }: FormProps) => {
           Category
         </label>
         <select
-          ref={category}
+          {...register("category")}
           className="form-select"
           aria-label="Default select example"
         >
