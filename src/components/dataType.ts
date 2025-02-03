@@ -17,3 +17,5 @@ export const categoryOptions = [
     "clothing",
     "other",
 ];
+
+export const selectedFilterCategory = 'all'
