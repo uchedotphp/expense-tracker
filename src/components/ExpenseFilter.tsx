@@ -13,6 +13,7 @@ export const ExpenseFilter = ({
       onChange={(event) => onSelectCategory(event.target.value)}
       className="form-select mb-3"
     >
+      <option value="all">Open this select menu</option>
       {categoryOptions.map((option, index) => (
         <option key={index} value={option}>
           {option}
